@@ -1,0 +1,44 @@
+html {
+    height:100%;
+}
+
+body {
+    height: 100%;
+    margin: 10px;
+}
+
+.header {
+    height: 30px;
+    padding: 10px;
+    background-color: 'aliceblue';
+    font-size: 16px;
+    text-align: center;
+}
+
+#graph-container {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  background-color: #455660;
+}
+
+.sigma-edge {
+  stroke: #14191C;
+}
+
+.sigma-node {
+  fill: green;
+  stroke: #14191C;
+  stroke-width: 2px;
+}
+
+.sigma-node:hover {
+  fill: blue;
+}
+
+.muted {
+  fill-opacity: 0.1;
+  stroke-opacity: 0.1;
+}

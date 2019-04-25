@@ -1,29 +1,69 @@
-<html>
-    <head>
-        <style type="text/css">
-            #container {
-                max-width: 1000px;
-                height: 1000px;
-                background-color: 'aliceblue';
-                margin: auto;
-            }
-        </style>
-    </head>
+<script src="../lib/sigma.min.js"></script>
+<script src="../lib/sigma.parsers.json.min.js"></script>
+<script src="../lib/sigma.layout.forceAtlas2.min.js"></script>
+<link rel="stylesheet" href="style.css">
 
-    <body>
-        <div id="container"></div>
+<div id="container">
+    <div id="graph-container"></div>
+</div>
 
-        <script src="../lib/sigma.min.js"></script>
-        <script src="../lib/sigma.parsers.json.min.js"></script>
-        <script src="../lib/sigma.layout.forceAtlas2.min.js"></script>
+<script>
+    var i,
+        s,
+        N = 500,
+        E = 1000,
+        graph = {
+          nodes: [],
+          edges: []
+        };
 
-        <script>
-            sigma.parsers.json('../data.json', {
-                container: 'container',
-                settings: {
-                    defaultNodeColor: '#656565'
-                }
-            });
-        </script>
-    </body>
-</html>
+    // Generate a random graph:
+    for (i = 0; i < N; i++)
+      graph.nodes.push({
+        id: 'n' + i,
+        label: 'Node ' + i,
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: '#666'
+      });
+
+    for (i = 0; i < E; i++)
+      graph.edges.push({
+        id: 'e' + i,
+        source: 'n' + (Math.random() * N | 0),
+        target: 'n' + (Math.random() * N | 0),
+        size: Math.random(),
+        color: '#ccc',
+        // type: 'curvedArrow',
+      });
+
+      // Initialise sigma:
+    s = new sigma({
+      graph: graph,
+      renderer: {
+          id: 'main-renderer',
+          container: document.getElementById('graph-container'),
+          // type: 'canvas',
+          type: 'svg',
+          // freeStyle: true
+      },
+      settings: {
+        enableHovering: false,
+        // edgeLabelSize: 'proportional',
+        // minArrowSize: 10
+      }
+    });
+
+    // load the graph
+    // s.graph.read(graph);
+
+    // draw the graph
+    s.refresh();
+
+    // launch force-atlas for 5sec
+    // s.startForceAtlas2();
+    // window.setTimeout(function() {s.killForceAtlas2()}, 10000);
+
+
+</script>
