@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <style type="text/css">
+            #container {
+                max-width: 1000px;
+                height: 1000px;
+                background-color: 'aliceblue';
+                margin: auto;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="container"></div>
+
+        <script src="../lib/sigma.min.js"></script>
+        <script src="../lib/sigma.parsers.json.min.js"></script>
+        <script src="../lib/sigma.layout.forceAtlas2.min.js"></script>
+
+        <script>
+            sigma.parsers.json('../data.json', {
+                container: 'container',
+                settings: {
+                    defaultNodeColor: '#656565'
+                }
+            });
+        </script>
+    </body>
+</html>
