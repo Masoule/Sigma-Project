@@ -60,8 +60,8 @@
 <script>
     var i,
         s,
-        N = 100,
-        E = 200,
+        N = 200,
+        E = 250,
         graph = {
             nodes: [],
             edges: []
@@ -87,7 +87,7 @@
         size: Math.random(),
         color: '#e1f3f6',
         // labelColor: '#e1f3f6',
-        type: 'curvedArrow',
+        type: 'arrow',
     });
 
     // Initialise sigma:
@@ -96,14 +96,33 @@
         renderer: {
             id: 'main-renderer',
             container: document.getElementById('graph-container'),
-            // type: 'canvas',
-            type: 'svg',
+            type: 'canvas',
+            // type: 'svg',
             freeStyle: true
         },
         settings: {
-            enableHovering: false,
+            enableHovering: true,
             edgeLabelSize: 'proportional',
-            minArrowSize: 10
+            minArrowSize: 10,
+            minEdgeSize: 1,
+            // maxEdgeSize: 2,
+            minNodeSize: 2,
+            // maxNodeSize: 50,
+            edgeColor: 'default',
+            // defaultLabelColor: '#e1f3f6',
+            defaultEdgeColor: '#e1f3f6',
+            defaultEdgeType: 'arrow',
+            defaultNodeColor: '#e1f3f6',
+            autoRescale: ['nodePosition', 'nodeSize', 'edgeSize'],
+            animationsTime: 1000,
+            borderSize: 2,
+            outerBorderSize: 3,
+            enableEdgeHovering: false,
+            edgeHoverColor: '#2ecc71',
+            defaultEdgeHoverColor: '#2ecc71',
+            edgeHoverSizeRatio: 2,
+            edgeHoverExtremities: true,
+            scalingMode: 'outside'
         }
     });
 
@@ -113,8 +132,8 @@
     s.refresh();
 
     // launch force-atlas for 5sec
-    s.startForceAtlas2();
-    window.setTimeout(function() { s.killForceAtlas2() }, 3000);
+    // s.startForceAtlas2();
+    // window.setTimeout(function() { s.killForceAtlas2() }, 3000);
 
 
     function mute(node) {
@@ -126,31 +145,60 @@
         node.setAttributeNS(null, 'class', node.getAttribute('class').replace(/(\s|^)muted(\s|$)/g, '$2'));
     }
 
-    $('.sigma-node').click(function() {
+    // $('.sigma-node').click(onClick);
+    s.bind('clickStage', resetColors);
 
-        // Muting
-        $('.sigma-node, .sigma-edge').each(function() {
-            mute(this);
+    function resetColors() {
+        s.graph.nodes().forEach( function (node) {
+            node.color = s.settings.defaultNodeColor;
         });
 
-        // Unmuting neighbors
-        var neighbors = s.graph.neighborhood($(this).attr('data-node-id'));
+        s.graph.edges().forEach( function (node) {
+            node.color = s.settings.defaultEdgeColor;
+        });
 
-        console.log(neighbors)
+        s.refresh();
+    }
 
+    // Initialize the dragNodes plugin:
+    // var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+
+    s.bind('clickNode', onClick);
+
+    function onClick(e) {
+        //reset previous selection
+        resetColors()
+
+        var nodeId = e.data.node.id;
+
+        s.graph.nodes().forEach(function (node) {
+            if (node.id === nodeId) {
+                node.color = '#2ecc71';
+            } else {
+                node.color = 'rgba(225,243,246,0.1)';
+            }
+        });
+
+        var neighbors = s.graph.neighborhood(nodeId);
         neighbors.nodes.forEach(function(node) {
-            unmute($('[data-node-id="' + node.id + '"]')[0]);
+            node.color = s.settings.defaultNodeColor;
         });
 
-        neighbors.edges.forEach(function(edge) {
-            unmute($('[data-edge-id="' + edge.id + '"]')[0]);
+        s.graph.edges().forEach( function (edge) {
+            edge.color = 'rgba(225,243,246,0.1)';
         });
-    });
 
-    s.bind('clickStage', function() {
-        $('.sigma-node, .sigma-edge').each(function() {
-            unmute(this);
+
+        s.graph.adjacentEdges(nodeId).forEach( function (ee) {
+            if (ee.source === nodeId) {
+                ee.color = '#2ecc71';
+            } else {
+                ee.color = s.settings.defaultNodeColor;
+            }
         });
-    });
+
+        s.graph = graph;
+        s.refresh();
+    }
 
 </script>

@@ -35,7 +35,7 @@ body {
 }
 
 .sigma-node:hover {
-  fill: blue;
+  fill: #2ecc71;
 }
 
 .muted {
