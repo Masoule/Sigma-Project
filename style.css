@@ -10,7 +10,6 @@ body {
 .header {
     height: 30px;
     padding: 10px;
-    background-color: 'aliceblue';
     font-size: 16px;
     text-align: center;
 }
@@ -21,16 +20,17 @@ body {
   left: 0;
   right: 0;
   position: absolute;
-  background-color: #455660;
+  background-color: #455990;
 }
 
 .sigma-edge {
-  stroke: #14191C;
+  stroke: #e1f3f6;
 }
 
 .sigma-node {
-  fill: green;
-  stroke: #14191C;
+  fill: #e1f3f6;
+  stroke: #e1f3f6;
+  color: #e1f3f6;
   stroke-width: 2px;
 }
 
